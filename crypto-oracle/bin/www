@@ -1,0 +1,91 @@
+#!/usr/bin/env node
+require('dotenv').config()
+
+const app = require('../app');
+const http = require('http')
+const config = rootrequire('config/config')
+const validate = rootrequire('utils/validate-props')
+const debug = require('debug')('oracle:www')
+
+//----------------------------------------------
+// Validating if mandatory props are being set.
+// If not terminate the application (do not 
+// start an application server).
+//----------------------------------------------
+try {    
+    validate([
+        {name: 'HOST'},
+        {name: 'PORT'},
+        {name: 'KEY_SEED'},
+        {name: 'API_KEY'},
+        {name: 'ARP_COOKIE'},
+        {name: 'ARP_CHALLENGE'},        
+        {name: 'ECB_COOKIE'},
+        {name: 'ECB_CHALLENGE'},
+        {name: 'CBC_IV_CHALLENGE'},
+        {name: 'CBC_IV_INCREMENT'},
+        {name: 'CTR_CHALLENGE'},
+        {name: 'PUBLIC_KEY'},
+        {name: 'PRIVATE_KEY'},
+        {name: 'ASYMM_CHALLENGE'},
+        {name: 'VIEW'},
+        {name: 'ERRORS'}
+    ], config)
+    
+} catch(err) {
+    debug(err);  
+    debug('Server could not be started. Terminating the application...');
+    process.exit(1);    
+}
+
+
+//----------------------------------------------
+// Configure and start an application server.
+//----------------------------------------------
+app.set('port', config.PORT)
+const server = http.createServer(app)
+server.listen(config.PORT, config.HOST)
+server.on('error', onError)
+server.on('listening', onListening)
+
+function normalizePort(val) {
+    const port = parseInt(val, 10)
+
+    if (isNaN(port)) {
+        return val
+    }
+
+    if (port >= 0) {
+        return port
+    }
+
+    return false
+}
+
+
+function onError(error) {
+    if (error.syscall !== 'listen') {
+        throw error
+    }
+
+    switch (error.code) {
+        case 'EACCES':
+            debug('EACCES: selected port requires elevated privileges')
+            process.exit(1)
+        break
+        case 'EADDRINUSE':
+            debug('EADDRINUSE: selected port is already in use')
+            process.exit(1)
+        break
+        default:
+            throw error
+    }
+}
+
+function onListening() {
+    const addr = this.address()
+    const bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port
+    debug('Listening on ' + bind)
+}

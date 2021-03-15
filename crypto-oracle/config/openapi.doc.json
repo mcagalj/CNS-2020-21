@@ -1,0 +1,612 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Crypto Oracle API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    },
+    {
+      "url": "http://{hostname}:{port}",
+      "description": "Lab server",
+      "variables": {
+        "hostname": { "default": "127.0.0.1" },
+        "port": { "default": "3000" }
+      }
+    }
+  ],
+  "components": {
+    "schemas": {
+      "EncryptedChallenge": {
+        "type": "object",
+        "properties": {
+          "iv": {
+            "type": "string",
+            "description": "Initialization vector (hex encoded)",
+            "example": "417b8e31e19454cc437597f058fdea9f"
+          },
+          "ciphertext": {
+            "type": "string",
+            "description": "Ciphertext (hex encoded)",
+            "example": "7242ae2dddb0de4596a9993253d889c594759669e8f78d7c85ca34e41e40a2b061916e523ee479711d4c5511cc6d6ac3"
+          }
+        }
+      },
+      "AuthorizationError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "example": "Authorization Error"
+              },
+              "message": {
+                "type": "string",
+                "example": "You are not authorized for the requested resource."
+              },
+              "status": { "type": "integer", "example": 403 }
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "example": "Error"
+              },
+              "message": {
+                "type": "string",
+                "example": "Sorry, your request cannot be processed."
+              },
+              "status": { "type": "integer", "example": 500 }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "crypto-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "ARP",
+      "description": "Understanding basic network vulnerabilities."
+    },
+    {
+      "name": "ECB",
+      "description": "A naive and insecure approach to encrypting large blocks of data."
+    },
+    {
+      "name": "CBC",
+      "description": "Breaking CBC mode of encryption when used with a <em>predictable</em> initialization vector."
+    },
+    {
+      "name": "CTR",
+      "description": "Breaking CTR mode of encryption when used with a <em>repeating</em> initialization vector."
+    },
+    {
+      "name": "Asymmetric cryptography (RSA and DH)",
+      "description": "Basic principles behind <em>authenticated Diffie-Hellman key exchange protocol</em>"
+    }
+  ],
+  "paths": {
+    "/asymmetric/rsa/client": {
+      "post": {
+        "description": "Send the client's public RSA key to the server.",
+        "summary": "Step 1",
+        "tags": ["Asymmetric cryptography (RSA and DH)"],
+        "parameters": [],
+        "requestBody": {
+          "description": "Client's public RSA key",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "Client's public RSA key (hex encoded)",
+                    "example": "2d2d2d2d2d424547494e20525341205055424c4943204b45592d2d2d2d2d0a4d49494243674b43415145417734593367354479546e5868335178724f76787137553148644752362f356267326677723044354c557978532f584138764547370a726b5a7a397361784678722f312f303350666135487355416b6b79777a75752f50776f7034716c30417945682b3878565449304e596a46716454692f784c64350a545569487276574979444b4a78393245746532583079385345346a357246557473763632663761384666524a32572f6b64324442526b4976775a5744384a36720a6c48584742494256367238662b6b78637941524b72695a4f496e724446486d6e54316c65643138374d6a386856652b3074665a5a6a6f65744f2f7750667567750a43416a383646537a517361577144506252354675375863355070494d5950794e776d2b77302b763044424d55736c4174412b4f63325050662b41614e55496f540a2f42556637392b4d5a6567637866665750725073423864316a35746632582f2b6c514944415141420a2d2d2d2d2d454e4420525341205055424c4943204b45592d2d2d2d2d0a"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Public key error. The submitted client's public RSA key is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Public key error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Bad or missing public key"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/asymmetric/rsa/server": {
+      "get": {
+        "description": "Fetch the server's public RSA key.",
+        "summary": "Step 2",
+        "tags": ["Asymmetric cryptography (RSA and DH)"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Server's public RSA key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "description": "Server's public RSA key (hex encoded)",
+                      "example": "2d2d2d2d2d424547494e205055424c4943204b45592d2d2d2d2d0a4d494942496a414e42676b71686b6947397730424151454641414f43415138414d49494243674b43415145417457572b486f67516c3571734d4b5564354757346535704f5747756330626e3877465334414b326b7757395346744e627431714c784c44767a46453579325a2b732f3366335333493643426b445167435a31574d4f306d674d3147544d53742f46367242506a704b336c4755704263577145696d724c555a6e69333566396b436b547257566f536270484179726469596168425264364944613050485a5a5466596c4e566f4f354577376f44396363637a48612f6c75796d4d4a6c7746557879626764465a626d764475552f4d5a6a4b353373415168376b74516c515073465a5a3261564f394a636a5736506762374956464c6a41654954766a685643304c49596236572b484f535742695a74334f556a426c2b3355704d627a4b4768354237542b6d524a3263613072554d79786f464c785a4b52597a71496f5757434b744f5450593458497855486a67484c4b655669776d4a4b514944415141420a2d2d2d2d2d454e44205055424c4943204b45592d2d2d2d2d"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/asymmetric/dh/client": {
+      "post": {
+        "description": "Send a client's public DH key to the server. The DH key is signed with the client's private RSA key. The server in turn verifies the signature using the client's public RSA key.",
+        "summary": "Step 3",
+        "tags": ["Asymmetric cryptography (RSA and DH)"],
+        "parameters": [],
+        "requestBody": {
+          "description": "Signed client's public DH key",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "Client's public DH key (hex encoded)",
+                    "example": "07a050f4e086f82df845084402144971c1e4aee7848fc0b777b70d8b282406d64da7442297260833b09e8cd993dd39b1f00da28c316773b548079e9a80f2342bff26e95fea9f79e67c8b47f4e7bc4fa8576c9b587d24fa9cb664fae4d08004775e461a4ae49353f6853a5872b2b645a53d8332ea8adbe928e0fad49cb6896506c7ff89799b14597c345ac65cdf79f455710dd7efc24c7c18e975860f16b2670770ce3718158af5884dd1131af006860a3756f6a8e7a673c55738c2a1e909f3a7a25f95f3484244df7e448c692ca801594f28de3874a7a424df3231ac6f4bca62158b8305b9b93c19fa1b4ae579b54d22a61ae538475474ecd8c8199a0491674a4df45936363f8786cc49590d3c979f317feb7901d7ad790e328317650276f8b1eb72a4faf2089f287560ca249db79746b3334c873760ecffd862a890b4a0924825d00c291b1054efd0b84b3f2e51c2358128085b6a94866783ce347c4ae26f1c181b74578c19657ae14e4fc560246d47c84722d30fb4333ff7615c9d4c6c0832"
+                  },
+                  "signature": {
+                    "type": "string",
+                    "description": "An RSA signature over the client's public DH key (hex encoded)",
+                    "example": "09a8a63325c29bcb2175d4d2cade8f44750ed47abed5021abb6da23270fed7e5ceceed2a40b68abce79d67007f57bc61741a2dddd0e35bcb45bb540f3220deeb2f811f68215f92ffba401041a3e4b1084078c1d4ea7640ca43d7bf675b57ce6c9c1e1106c5946a49347fd38ed8ddc9d1ea922251ea7cedba901bfc081eb61478c03e645410ebe447a1f8ce40ae8ceb656ade13d9cd51b5b6910ab6a967c34425240e13722c6d5aa80fc6646c86d405e071128270cdda7f4e2ea3ffe7764e02b85b00a7ba60e084594076a5b53cc49a4080c41dc2068536e4e7e3fcbe22c14f509955944a4f94cec16beb9b3198663a78aefeaac967d2f778798b5d91620d2920"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Missing the client's public RSA key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Missing Key"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Missing the client's public RSA key. Please make sure that you have run all the previous steps of the protocol."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid Signature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Invalid Signature"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Could not verify the signature over the client's public DH key."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/asymmetric/dh-challenge/server": {
+      "get": {
+        "description": "Fetch a challenge. The challenge is a ciphertext obtained by encrypting a joke in the CTR mode using a random initialization vector (IV) and the AES cipher. The AES encryption key is derived from the Diffie-Hellman key established in a Diffie-Hellman key exchange protocol run. The AES key is derived using the PBKDF2 key derivation function.",
+        "summary": "Step 4",
+        "tags": ["Asymmetric cryptography (RSA and DH)"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The last message sent by the server in the given Diffie-Hellman key exchange protocol (please consult the lab instructions for more details).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "description": "Server's Diffie-Hellman public key (hex encoded, 3072-bit)",
+                      "example": "6dc64e33c862c5c3ca8ae441a233fda2c20e27f07fcfc4436073205e0c279b9188a16e7b00d6c15482637c9faa29ea750ed2a75f565c5fcae5d2f2395cf016ae3b5a11b17b576de35a00e5dea163a7dae9d4c29dc34ff113c2624402268824892dcbc5945c62dc8943f88e5a931ebcb111130a5217fbe3d8fd8f83f36811f24ea7f65eee10ee49e44d334b548128baf73ac3fa9e294b5066ff01c7eddfdb0c8e8e7cfd55373ee5c41d4461c8992cdd89dda772da544a46101a98d3914cecbbea1b286ee28e3683bb4c2a11ec9cfd4a9866c13aa4b1743278bfa419771d62ea914a4378631094af2c95eb22728aac4123c43857d208130b354cfec4752da3027217424c96dd4c14b84877be3e23872c5b2f3d516ae40b97ecf1ec2efb859e43e8e9f0398f7372b12ba438ee1c0816d8a171d665924aed32866be3f0fd669433e02a5b1d144a45865819c933dc573fee075d419d51d1f75427b15d3e4d4610080d287808882a19b2a525531b119f3941407c8666356644e2600a6651fe0c3ed7b5"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing the client's public DH key. Before running this request, the client has to submit its own public DH key to the server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Missing Key"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Missing the client's DH public key. Please make sure that you have run all the previous steps of the protocol."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/arp": {
+      "get": {
+        "description": "Fetch the Cookie. This request must be authenticated.",
+        "tags": ["ARP"],
+        "security": [{ "ApiKeyAuth": [] }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "crypto-api-key",
+            "schema": {
+              "type": "string"
+            },
+            "description": "An API key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK (successfully authenticated)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cookie": {
+                      "type": "string",
+                      "description": "The Cookie (utf8 encoded)."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization error (missing or invalid API key)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthorizationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/arp/challenge": {
+      "get": {
+        "description": "Fetch a challenge. The challenge is obtained by encrypting a joke in the CBC mode using the AES cipher, with an encryption key being derived from the Cookie. The AES key is derived using the PBKDF2 key derivation function.",
+        "tags": ["ARP"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Encrypted challenge",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncryptedChallenge"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/ecb/challenge": {
+      "get": {
+        "description": "Fetch a challenge. The challenge is a ciphertext obtained by encrypting a joke in the CBC mode using the AES cipher, with an encryption key being derived from the Cookie. The encryption key is derived using the PBKDF2 key derivation function.",
+        "tags": ["ECB"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Encrypted challenge",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncryptedChallenge"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ecb": {
+      "post": {
+        "description": "Encrypt a concatenation of the submitted plaintext and Cookie using the ECB mode (<em>plaintext + Cookie</em>). If no or empty plaintext is submitted, the crypto oracle will encrypt only the Cookie.",
+        "tags": ["ECB"],
+        "requestBody": {
+          "description": "Plaintext object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "plaintext": {
+                    "type": "string",
+                    "description": "A plaintext object to be concatenated with the Cookie and subsequently encrypted",
+                    "example": "aaaaa"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A ciphertext obtained by encrypting the concatenation of the submitted plaintext and the Cookie, using the ECB encryption mode.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "iv": {
+                      "type": "string",
+                      "description": "Initialization vector (hex encoded)",
+                      "example": "409e6daf367bf9bb5332f640fa1d8b76"
+                    },
+                    "ciphertext": {
+                      "type": "string",
+                      "description": "Ciphertext (hex encoded)",
+                      "example": "4de32cbaa82d9c0d4ade076de59b3497"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wordlist.txt": {
+      "get": {
+        "description": "Fetch a file comprising a list of words from which a challenge word is selected.",
+        "tags": ["CBC"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "aardvark\nabandoned\nabbreviate\nabdomen\nabhorrence\n..."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cbc/iv/challenge": {
+      "get": {
+        "description": "Fetch a challenge. The challenge is a ciphertext obtained by first selecting a secret word from the given wordlist (<em>wordlist.txt</em>), and then encrypting the word in the CBC mode (with the AES cipher) while using a predictable initialization vector (IV).",
+        "tags": ["CBC"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Encrypted challenge (a secret word from the wordlist).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "iv": {
+                      "type": "string",
+                      "description": "Initialization vector (hex encoded)",
+                      "example": "78089a0cdc65670e6561c657a4bd5d86"
+                    },
+                    "ciphertext": {
+                      "type": "string",
+                      "description": "Ciphertext (hex encoded)",
+                      "example": "7d48a3032c4d17d97759bd1812658ca1"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cbc/iv": {
+      "post": {
+        "description": "Encrypt a chosen/submitted word. The word is encrypted in CBC mode while using a predictable initialization vector (IV).",
+        "tags": ["CBC"],
+        "parameters": [],
+        "requestBody": {
+          "description": "Plaintext object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "plaintext": {
+                    "type": "string",
+                    "description": "Hex encoded plaintext to be encrypted.",
+                    "example": "6d6f727475617279080808080808179c"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Encrypted word",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "iv": {
+                      "type": "string",
+                      "description": "Predictable initialization vector (hex encoded)",
+                      "example": "78089a0cdc65670e6561c657a4bd5d86"
+                    },
+                    "ciphertext": {
+                      "type": "string",
+                      "description": "Ciphertext (hex encoded)",
+                      "example": "7d48a3032c4d17d97759bd1812658ca1"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ctr/challenge": {
+      "get": {
+        "description": "Fetch a challenge. The challenge is a ciphertext  obtained by encrypting a joke in the CTR mode (with the AES cipher) while using a random but low-entropy initialization vector (IV); the IV is selected randomly from a small set of possible values.",
+        "tags": ["CTR"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Encrypted challenge",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ciphertext": {
+                      "type": "string",
+                      "description": "Ciphertext (hex encoded)",
+                      "example": "be3cc7d1c351efdaa1a505b3e8aca2335a3c2f0e2eb3c34953e9e88aaeb35c279e863d299ec03e082f618b694e"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ctr": {
+      "post": {
+        "description": "Encrypt a submitted plaintext. The plaintext is encrypted in the CTR mode (with the AES cipher) while using a random but low-entropy initialization vector (IV); the IV is selected randomly from a small set of possible values.",
+        "tags": ["CTR"],
+        "requestBody": {
+          "description": "Plaintext object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "plaintext": {
+                    "type": "string",
+                    "description": "Hex encoded plaintext `hello` to be encrypted.",
+                    "example": "68656c6c6f"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Encrypted plaintext",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ciphertext": {
+                      "type": "string",
+                      "description": "Ciphertext (hex encoded)",
+                      "example": "8cde0ead0ef22f945390"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
