@@ -43,7 +43,7 @@ U nastavku su upute za pokretanje navedene mreže na lokalnom računalu.
 4. Uđite u direktorij `arp-spoofing/`:
 
     ```console
-    cd CNS-2019-20/arp-spoofing/
+    cd CNS-2020-2021/arp-spoofing/
     ```
 
     U direktoriju se nalaze skripte `start.sh` i `stop.sh` koje možete pozvati za pokretanje/zaustavljanje virtualiziranog mrežnog scenarija. Ovdje se također nalaze `docker` i `docker-compose` konfiguracijske datoteke kojima su opisana Docker virtualna računala i odgovarajuća virtualna mreža.
