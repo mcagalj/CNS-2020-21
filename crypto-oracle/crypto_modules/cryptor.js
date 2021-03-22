@@ -4,7 +4,7 @@ const DEFAULTS = {
   salt: "salt",
   iterations: 300000,
   size: 32,
-  hash: "sha512"
+  hash: "sha512",
 };
 
 //---------------------------------
@@ -36,7 +36,7 @@ function encrypt({
   plaintext,
   padding = true,
   inputEncoding = "utf8",
-  outputEncoding = "hex"
+  outputEncoding = "hex",
 }) {
   const cipher = crypto.createCipheriv(mode, key, iv);
   cipher.setAutoPadding(padding);
@@ -45,7 +45,7 @@ function encrypt({
 
   return {
     iv: iv.toString(outputEncoding),
-    ciphertext
+    ciphertext,
   };
 }
 
@@ -59,7 +59,7 @@ function decrypt({
   ciphertext,
   padding = true,
   inputEncoding = "hex",
-  outputEncoding = "utf8"
+  outputEncoding = "utf8",
 }) {
   const decipher = crypto.createDecipheriv(mode, key, iv);
   decipher.setAutoPadding(padding);
@@ -71,20 +71,20 @@ function decrypt({
 //--------------------------------------
 // Testing encryptor with 'aes-256-cbc'
 //--------------------------------------
-// (async () => {
-//   try {
-//     const mode = "aes-256-cbc";
-//     const key = await pbkdf2({ cookie: "zelursirronkcuhc" });
-//     const iv = Buffer.from("711324d3dc0ab9508f551f327111ddb9", "hex");
-//     const plaintext = "ECB: Chuck Norris je zatvorio Otvoreni radio.";
+(async () => {
+  try {
+    const mode = "aes-256-cbc";
+    const key = await pbkdf2({ cookie: "zelursirronkcuhc" });
+    const iv = Buffer.from("711324d3dc0ab9508f551f327111ddb9", "hex");
+    const plaintext = "ECB: Chuck Norris je zatvorio Otvoreni radio.";
 
-//     const ciphertext = encrypt({ mode, iv, key, plaintext });
+    const ciphertext = encrypt({ mode, iv, key, plaintext });
 
-//     console.log("Encryptor: %o", ciphertext);
-//   } catch (err) {
-//     console.error(err);
-//   }
-// })();
+    console.log("Encryptor:", ciphertext);
+  } catch (err) {
+    console.error(err);
+  }
+})();
 
 //-------------------------------------
 // Testing decryptor with 'aes-256-cbc'
@@ -99,7 +99,7 @@ function decrypt({
 
     const plaintext = decrypt({ mode, iv, key, ciphertext });
 
-    console.log("Decryptor: %o", plaintext);
+    console.log("Decryptor:", plaintext);
   } catch (err) {
     console.error(err);
   }

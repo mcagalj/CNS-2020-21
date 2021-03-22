@@ -14,15 +14,15 @@ let challenge = null;
     // actually, we use a key derived from the ECB_COOKIE to
     // prepare this challenge (as shown in the sequel).
     const cookiekey = await Crypto.generateKey("PBKDF2", {
-      secret: config.ARP_COOKIE
+      secret: config.ARP_COOKIE,
     });
 
     challenge = Crypto.encrypt("CBC", {
       key: cookiekey,
       iv: await random(),
-      plaintext: config.ARP_CHALLENGE
+      plaintext: config.ARP_CHALLENGE,
     });
-    debug("Challenge ready [ARP]: %o", challenge);
+    debug("Challenge ready [ARP]: %O", challenge);
   } catch (err) {
     debug(err);
     debug("Cannot proceed. Terminating the application...");
@@ -32,5 +32,5 @@ let challenge = null;
 
 module.exports = {
   index: (req, res) => res.json({ cookie: config.ARP_COOKIE }),
-  challenge: (req, res) => res.json(challenge)
+  challenge: (req, res) => res.json(challenge),
 };

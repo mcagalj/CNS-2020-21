@@ -16,15 +16,15 @@ let challenge = null;
     // actually, we use a key derived from the ECB_COOKIE to
     // prepare this challenge (as shown in the sequel).
     const cookiekey = await Crypto.generateKey("PBKDF2", {
-      secret: config.ECB_COOKIE
+      secret: config.ECB_COOKIE,
     });
 
     challenge = Crypto.encrypt("CBC", {
       key: cookiekey,
       iv: await random(),
-      plaintext: config.ECB_CHALLENGE
+      plaintext: config.ECB_CHALLENGE,
     });
-    debug("Challenge ready [ECB]: %o", challenge);
+    debug("Challenge ready [ECB]: %O", challenge);
   } catch (err) {
     debug(err);
     debug("Cannot proceed. Terminating the application...");
@@ -51,7 +51,7 @@ module.exports = {
 
       const { ciphertext } = Crypto.encrypt("ECB", {
         key,
-        plaintext: plaintext.concat(config.ECB_COOKIE)
+        plaintext: plaintext.concat(config.ECB_COOKIE),
       });
 
       return res.json({ ciphertext });
@@ -61,5 +61,5 @@ module.exports = {
     }
   },
 
-  challenge: (req, res) => res.json(challenge)
+  challenge: (req, res) => res.json(challenge),
 };

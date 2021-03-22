@@ -18,9 +18,9 @@ let iv = null;
     challenge = Crypto.encrypt("CBC", {
       key,
       iv,
-      plaintext: config.CBC_IV_CHALLENGE
+      plaintext: config.CBC_IV_CHALLENGE,
     });
-    debug("Challenge ready [CBC]: %o", challenge);
+    debug("Challenge ready [CBC]: %O", challenge);
   } catch (err) {
     debug(err);
     debug("Cannot proceed. Terminating the application...");
@@ -53,7 +53,7 @@ module.exports = {
         const challenge = Crypto.encrypt("CBC", {
           key,
           iv,
-          plaintext: Buffer.from(plaintext, "hex")
+          plaintext: Buffer.from(plaintext, "hex"),
         });
 
         return res.json(challenge);
@@ -64,6 +64,6 @@ module.exports = {
       }
     },
 
-    challenge: (req, res) => res.json(challenge)
-  }
+    challenge: (req, res) => res.json(challenge),
+  },
 };

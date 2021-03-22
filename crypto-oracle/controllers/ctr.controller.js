@@ -17,10 +17,10 @@ let iv = null;
     challenge = Crypto.encrypt("CTR", {
       key,
       iv,
-      plaintext: config.CTR_CHALLENGE
+      plaintext: config.CTR_CHALLENGE,
     });
 
-    debug("Challenge ready [CTR]: %o", challenge);
+    debug("Challenge ready [CTR]: %O", challenge);
   } catch (err) {
     debug(err);
     debug("Cannot proceed. Terminating the application...");
@@ -42,7 +42,7 @@ module.exports = {
       const { iv: test_iv, ciphertext } = Crypto.encrypt("CTR", {
         key,
         iv,
-        plaintext: Buffer.from(plaintext, "hex")
+        plaintext: Buffer.from(plaintext, "hex"),
       });
 
       return res.json({ ciphertext });
@@ -52,5 +52,5 @@ module.exports = {
     }
   },
 
-  challenge: (req, res) => res.json({ ciphertext: challenge.ciphertext })
+  challenge: (req, res) => res.json({ ciphertext: challenge.ciphertext }),
 };

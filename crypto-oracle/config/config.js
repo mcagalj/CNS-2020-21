@@ -1,6 +1,6 @@
 const {
-  NODE_ENV = "dev",
-  HOST = "localhost",
+  NODE_ENV = "development",
+  HOST = "0.0.0.0",
   PORT = 3000,
   KEY_SEED,
   API_KEY_IDENTIFIER = "crypto-api-key",
@@ -14,17 +14,17 @@ const {
   CTR_CHALLENGE = undefined,
   PUBLIC_KEY = undefined,
   PRIVATE_KEY = undefined,
-  ASYMM_CHALLENGE = undefined
+  ASYMM_CHALLENGE = undefined,
 } = process.env;
 
-const dev = {
+const development = {
   HOST,
   PORT: parseInt(PORT, 10),
   PBKDF2: {
     hash: "sha512",
     size: 32,
     iterations: 50000,
-    salt: "salt"
+    salt: "salt",
   },
 
   // A seed used to derive a unique encryption key.
@@ -64,9 +64,9 @@ const dev = {
                 method: "GET",
                 params: "none",
                 response: "index.html",
-                description: `The index page (this page).`
-              }
-            ]
+                description: `The index page (this page).`,
+              },
+            ],
           },
           {
             title: "arp",
@@ -76,7 +76,7 @@ const dev = {
                 method: "POST",
                 params: "{ auth_key: string }",
                 response: "{ cookie: string (utf8) }",
-                description: `Fetch the COOKIE. This request must be authenticated.`
+                description: `Fetch the COOKIE. This request must be authenticated.`,
               },
 
               {
@@ -85,9 +85,9 @@ const dev = {
                 params: "none",
                 response: `{ iv: string (hex), ciphertext: string (hex) }`,
                 description: `Fetch a challenge encrypted in CBC mode using a key 
-                        derived from the COOKIE. The key is derived using pbkdfv2 algorithm.`
-              }
-            ]
+                        derived from the COOKIE. The key is derived using pbkdfv2 algorithm.`,
+              },
+            ],
           },
 
           {
@@ -99,7 +99,7 @@ const dev = {
                 params: "{ plaintext: string (utf8) }",
                 response: "{ ciphertext: string (hex) }",
                 description: `Get an encrypted concatenation of 
-                        the plaintext and COOKIE in ECB mode.`
+                        the plaintext and COOKIE in ECB mode.`,
               },
 
               {
@@ -108,9 +108,9 @@ const dev = {
                 params: "none",
                 response: "{ iv: string (hex), ciphertext: string (hex) }",
                 description: `Fetch a challenge encrypted in CBC mode using a key 
-                        derived from the COOKIE. The key is derived using pbkdf2 algorithm.`
-              }
-            ]
+                        derived from the COOKIE. The key is derived using pbkdf2 algorithm.`,
+              },
+            ],
           },
 
           {
@@ -123,7 +123,7 @@ const dev = {
                 response: "wordlist.txt",
                 description: `Fetch a file comprising a list of words from 
                         which a challenge word is selected by the "predictable 
-                        initialization vector CBC oracle".`
+                        initialization vector CBC oracle".`,
               },
 
               {
@@ -132,7 +132,7 @@ const dev = {
                 params: "{ plaintext: string (hex) }",
                 response: "{ iv: string (hex), ciphertext: string (hex) }",
                 description: `Get a chosen plaintext word encrypted in CBC mode
-                        using a predictable initialization vector (IV).`
+                        using a predictable initialization vector (IV).`,
               },
 
               {
@@ -141,9 +141,9 @@ const dev = {
                 params: "none",
                 response: "{ iv: string (hex), ciphertext: string (hex) }",
                 description: `Fetch a challenge word encrypted in CBC mode using 
-                        a predictable initialization vector (IV).`
-              }
-            ]
+                        a predictable initialization vector (IV).`,
+              },
+            ],
           },
 
           {
@@ -156,7 +156,7 @@ const dev = {
                 response: "{ ciphertext: string (hex) }",
                 description: `Fetch an encrypted plaintext in the CTR mode. The 
                         crypto oracle uses a random but low-entropy initialization vector 
-                        (IV); i.e., the IV is selected randomly from a small set of values.`
+                        (IV); i.e., the IV is selected randomly from a small set of values.`,
               },
 
               {
@@ -166,9 +166,9 @@ const dev = {
                 response: "{ ciphertext: string (hex) }",
                 description: `Fetch a challenge encrypted in the CTR mode using 
                         a random but low-entropy initialization vector (IV); i.e., the IV 
-                        is selected randomly from a small set of values.`
-              }
-            ]
+                        is selected randomly from a small set of values.`,
+              },
+            ],
           },
 
           {
@@ -179,7 +179,7 @@ const dev = {
                 method: "GET",
                 params: "none",
                 response: "{ key: string (hex) }",
-                description: `Fetch the server public RSA key.`
+                description: `Fetch the server public RSA key.`,
               },
 
               {
@@ -187,7 +187,7 @@ const dev = {
                 method: "POST",
                 params: "{ key: string (hex) }",
                 response: "{ result: string (utf8) }",
-                description: `Upload the client RSA key to the server.`
+                description: `Upload the client RSA key to the server.`,
               },
 
               {
@@ -197,7 +197,7 @@ const dev = {
                 response: "{ result: string (utf8) }",
                 description: `Send a client DH public key to the server. The DH key is
                         is signed by the client RSA private key. The server verifies the 
-                        signature using the client RSA public key.`
+                        signature using the client RSA public key.`,
               },
 
               {
@@ -208,13 +208,13 @@ const dev = {
                   "{ key: string (hex), signature: string (hex), challenge: {iv: string (hex), ciphertext: string(hex)} }",
                 description: `Fetch a challenge encrypted in the CTR mode using 
                         a random initialization vector (IV) and the AES encryption key that is derived from 
-                        the authenticated Diffie-Hellman key exchange. Please note that the AES key is derived using PBKDF2; for details (parameters used to derive the key) please consult the code on the server ("asymm.controller.js" file).`
-              }
-            ]
-          }
-        ]
-      }
-    }
+                        the authenticated Diffie-Hellman key exchange. Please note that the AES key is derived using PBKDF2; for details (parameters used to derive the key) please consult the code on the server ("asymm.controller.js" file).`,
+              },
+            ],
+          },
+        ],
+      },
+    },
   },
 
   //-----------------------------
@@ -224,34 +224,34 @@ const dev = {
     ENOTFOUND: {
       title: "Error",
       message: "Requested resource not found.",
-      status: 404
+      status: 404,
     },
 
     EPLAINTEXT_LIMIT: {
       title: "Formatting error",
       message: "You exceeded the plaintext size.",
-      status: 400
+      status: 400,
     },
 
     EBAD_PUBLICKEY: {
       title: "Public key error",
       message: "Bad or missing public key",
-      status: 400
+      status: 400,
     },
 
     ENOTAUTHORIZED: {
       title: "Authorization Error",
       message: "You are not authorized for the requested resource.",
-      status: 401
+      status: 401,
     },
 
     ESERVER: {
       title: "Error",
       message: "Sorry, your request cannot be processed.",
-      status: 500
-    }
-  }
+      status: 500,
+    },
+  },
 };
 
-const config = { dev };
+const config = { development };
 module.exports = config[NODE_ENV];

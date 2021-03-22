@@ -14,8 +14,8 @@ let clientRSAPublic = undefined;
 let clientDHPublic = undefined;
 let challenge = null;
 
-debug("RSA keys loaded!");
-debug("Server public RSA key:", serverRSAPublic);
+debug("RSA keys loaded ...");
+// debug("Server public RSA key:", serverRSAPublic);
 
 /**
  * STEP 1: A client sends its public RSA key to the server.
@@ -36,7 +36,7 @@ exports.clientRSA = (req, res, next) => {
         // faster than OAEP padding; there is no harm in doing
         // this since here we encrypt only locally to test
         // the correctness of the format of the submitted key.
-        padding: crypto.constants.RSA_PKCS1_PADDING
+        padding: crypto.constants.RSA_PKCS1_PADDING,
       },
       Buffer.from("0")
     );
@@ -56,7 +56,7 @@ exports.clientRSA = (req, res, next) => {
  */
 exports.serverRSA = (_, res) => {
   res.json({
-    key: Buffer.from(serverRSAPublic).toString("hex")
+    key: Buffer.from(serverRSAPublic).toString("hex"),
   });
 };
 
@@ -68,7 +68,7 @@ exports.clientDH = (req, res, next) => {
     return res.status(400).json({
       title: "Missing Key",
       message:
-        "Missing the client's public RSA key. Please make sure that you have run all the previous steps of the protocol."
+        "Missing the client's public RSA key. Please make sure that you have run all the previous steps of the protocol.",
     });
   }
 
@@ -90,7 +90,7 @@ exports.clientDH = (req, res, next) => {
       return res.status(401).json({
         title: "Invalid Signature",
         message:
-          "Could not verify the signature over the client's DH public key."
+          "Could not verify the signature over the client's DH public key.",
       });
     }
 
@@ -113,7 +113,7 @@ exports.challenge = (_, res, next) => {
     return res.status(400).json({
       title: "Missing Key",
       message:
-        "Missing the client's public DH. Please make sure that you have run all the previous steps of the protocol."
+        "Missing the client's public DH. Please make sure that you have run all the previous steps of the protocol.",
     });
   }
 
@@ -158,7 +158,7 @@ exports.challenge = (_, res, next) => {
     challenge = Crypto.encrypt("CTR", {
       key: derivedKey,
       iv: Buffer.alloc(16),
-      plaintext: config.ASYMM_CHALLENGE
+      plaintext: config.ASYMM_CHALLENGE,
     });
   } catch (err) {
     debug(err);
@@ -171,7 +171,7 @@ exports.challenge = (_, res, next) => {
   res.json({
     key: serverDH.getPublicKey("hex"),
     signature,
-    challenge
+    challenge,
   });
 
   // A DH key should be used only once in order to ensure

@@ -84,10 +84,6 @@
   },
   "tags": [
     {
-      "name": "ARP",
-      "description": "Understanding basic network vulnerabilities."
-    },
-    {
       "name": "ECB",
       "description": "A naive and insecure approach to encrypting large blocks of data."
     },
@@ -312,69 +308,6 @@
         }
       }
     },
-    "/arp": {
-      "get": {
-        "description": "Fetch the Cookie. This request must be authenticated.",
-        "tags": ["ARP"],
-        "security": [{ "ApiKeyAuth": [] }],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "crypto-api-key",
-            "schema": {
-              "type": "string"
-            },
-            "description": "An API key"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK (successfully authenticated)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "cookie": {
-                      "type": "string",
-                      "description": "The Cookie (utf8 encoded)."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authorization error (missing or invalid API key)",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/AuthorizationError" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/arp/challenge": {
-      "get": {
-        "description": "Fetch a challenge. The challenge is obtained by encrypting a joke in the CBC mode using the AES cipher, with an encryption key being derived from the Cookie. The AES key is derived using the PBKDF2 key derivation function.",
-        "tags": ["ARP"],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Encrypted challenge",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EncryptedChallenge"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-
     "/ecb/challenge": {
       "get": {
         "description": "Fetch a challenge. The challenge is a ciphertext obtained by encrypting a joke in the CBC mode using the AES cipher, with an encryption key being derived from the Cookie. The encryption key is derived using the PBKDF2 key derivation function.",
