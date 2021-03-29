@@ -10,7 +10,7 @@ U repozitoriju ćemo objavljivati upute, dijelove koda, konfiguracijske skripte,
 
 - [Lab 1 - Man-in-the-middle attacks (ARP spoofing)](/instructions/lab-1.md)
 - [Lab 2 - _Crypto Oracle_: Setting up the stage](/instructions/lab-2.md)
-- Lab 3 - ECB encryption mode vulnerabilities
+- [Lab 3 - ECB encryption mode vulnerabilities](/instructions/lab-3.md)
 - Lab 4 - CBC encryption mode and predictable initialization vectors (IV)
 - Lab 5 - CTR encryption mode and repeated counters
 - Lab 6 - Asymmetric crypto: RSA signatures and DH key exchange
