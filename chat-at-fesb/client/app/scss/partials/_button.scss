@@ -1,0 +1,19 @@
+$padding: 0.5em;
+$color-1: #444 !default;
+$color-2: lighten($color-1, 40%) !default;
+$color-3: #fff !default;
+$font-size: 1.25rem !default;
+
+@mixin Global__button {
+  padding: $padding;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: $color-1;
+  color: $color-2;
+  font-size: $font-size;
+  text-align: center;
+  &:hover {
+    color: $color-3;
+  }
+  text-overflow: ellipsis;
+}

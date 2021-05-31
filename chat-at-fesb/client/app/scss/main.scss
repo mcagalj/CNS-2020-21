@@ -1,0 +1,77 @@
+@import './partials/reset';
+@import './partials/animations';
+@import './partials/colors';
+@import './partials/field';
+@import './partials/button';
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+//----------------------
+// Basic variables
+//----------------------
+$body--bg-color: #fff;
+$body--color: #ddd;
+$body--color: #555;
+
+$body--text-size: 16px;
+$body--font-family: 'Roboto';
+$body--line-height: 1.5;
+
+//----------------------
+// Mixins
+//----------------------
+@mixin cns-font-face($family: false, $size: false, $colour: false, $weight: false,  $lh: false) {
+    @if $family 
+        { font-family: $family; }
+    @else 
+        { font-family: Helvetica, Arial, sans-serif; }
+    @if $size { 
+        font-size: $size; 
+        line-height: $body--line-height;
+    }
+    @if $colour { color: $colour; }
+    @if $weight { font-weight: $weight; }
+    @if $lh { line-height: $lh; }
+}
+
+//----------------------
+// Main container
+//----------------------
+#main {
+    display: grid;
+    grid-template-columns: [col1] 1fr [col2] auto [col3] 1fr [col4];
+    grid-template-rows: [row1]minmax(50px, 1fr) [row2] auto [row3] minmax(50px, 2fr) [row4];
+    height: 100vh;
+}
+
+//----------------------
+// Base layout
+//----------------------
+body { 
+    background-color: $body--bg-color;
+    @include cns-font-face($body--font-family, $body--text-size, $body--color);    
+    width: 100%;
+    height: 100%;
+}
+
+//--------------------------
+// Scrollbar
+//--------------------------
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+    border-left: solid 1px rgba(100,100,100,0.4);
+    border-top: solid 1px rgba(100,100,100,0.4);
+    border-bottom: solid 1px rgba(100,100,100,0.4);
+}
+ 
+::-webkit-scrollbar-thumb {
+    background: $color-1; 
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(100,100,100,0.0); 
+}

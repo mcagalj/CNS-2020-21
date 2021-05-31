@@ -1,0 +1,46 @@
+@import '~app/scss/main.scss';
+
+$color-1: #444   !default;
+$color-2: lighten($color-1, 40%)  !default;
+$color-3: #fff;
+$font-size: 1.25rem !default;
+
+.Tabs {
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+    height: 100%;
+    min-width: 500px;
+    max-width: 1000px;
+    margin: 0 auto;    
+}
+
+.Tabs__nav-bar {
+    display: flex;
+    list-style-type: none;
+    border-bottom: 1px solid $color-1;
+    background-color: $color-1;
+    box-shadow: 0 1px 2px rgba(0,0,0,.25);
+    > li {
+        padding: 0.5em 2rem;
+        cursor: pointer;
+        white-space: nowrap;
+        background-color: $color-1;
+        font-size: $font-size;
+        color: $color-2;
+    }
+    > li:hover {
+        color: $color-3; 
+    }
+}
+
+.Tabs__nav-bar--active {
+    color: $color-3 !important;
+}
+
+.Tabs__tab {
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem 3rem 2rem;
+    flex: 1 auto;
+}

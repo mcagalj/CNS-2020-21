@@ -1,0 +1,39 @@
+@import '~app/scss/main.scss';
+
+.ServerForm {
+    display: grid;
+    grid-template-columns: auto minmax(100px, 150px);
+    grid-template-areas: 
+        'host port'
+        'nickname nickname'
+        'button button';
+    grid-row-gap: 0.2em;
+    
+    position: relative; 
+    min-width: 450px;
+    max-width: 450px;
+}
+
+.ServerForm__host,
+.ServerForm__port,
+.ServerForm__nickname {
+    @include Global__input;
+}
+
+.ServerForm__host {
+    grid-area: host;
+}
+
+.ServerForm__port {
+    grid-area: port;
+    border-left: none;
+}
+
+.ServerForm__nickname {
+    grid-area: nickname;
+}
+
+.ServerForm__button {
+    grid-area: button;
+    @include Global__button;
+}

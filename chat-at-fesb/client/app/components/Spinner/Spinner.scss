@@ -1,0 +1,36 @@
+@import '~app/scss/main.scss';
+
+$color-1: #555   !default;
+$color-2: #fff  !default;
+$font-size: 1.2em;
+
+
+.Spinner__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+
+    background: rgba(255, 255, 255, 0.75);
+}
+
+.Spinner {
+    border: 4px solid $color-1;
+    border-top: 4px solid transparent;
+    border-radius: 100%;
+    animation: spin 1.25s linear infinite;
+    width: 100%;
+    height: 100%;
+}
+
+.Spinner__text {
+    font-size: $font-size;
+    color: $color-1;
+}

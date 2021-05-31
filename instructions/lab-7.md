@@ -93,13 +93,13 @@ Nekoliko referenci na ovu temu:
 Implementirati _end-2-end_ zaštitu poruka između klijenata. Pri tome je potrebno osigurati: _povjerljivost_, _autentičnost/integritet_, kao i zaštitu od _replay_ napada. Zaštitu implementirati na dva načina:
 
 1. CBC mode + HMAC u _encrypt-than-authenticate (EtA)_ kompoziciji
-2. GCM mode (**opcionalno; ovisno o raspoloživom vremenu i razini entuzijazma pojedinca**)
+ 2. GCM mode (**opcionalno**)
 
 ### Zadatak u koracima
 
 1. Preduvjet za zaštitu poruka jesu dijeljeni enkripcijski ključevi između klijenata. U Chat@FESB aplikaciji enkripcijski ključevi će se generirati na osnovu dijeljenih zaporki. Aplikacija predviđa polja u koje student može unosti zaporke. Student će koristiti sporu _Password Based Key Derivation Function 2 (PBKDF2)_ za generiranje potrebnih simetričnih ključeva iz dijeljene tajne zaporke.
 
-   Student treba modificirati datoteku `securityActions.js` (`chat-at-fesb\client\app\redux\actions`) na način opisan u komentaru u navedenoj datoteci. Ako ste ispravno napravili ovaj korak, aplikacija će generirane ključeve automatski pohranjivati u odgovarajuća polja u _Redux storu_-u. Možete koristite _Developer tools_ prozor (`View > Toggle Developer Tools`) u aplikaciji za praćenje logova aplikacije.
+   Student treba modificirati datoteku `securityActions.js` (`chat-at-fesb\client\app\redux\actions`) na način opisan u komentaru u navedenoj datoteci. Ako ste ispravno napravili ovaj korak, aplikacija će generirane ključeve automatski pohranjivati u odgovarajući _data store_, čiji sadržaj možete vidjeti u _Developer tools_ prozoru (`View > Toggle Developer Tools`).
 
 2. U ovom koraku student treba implementirati zaštitu povjerljivosti odlaznih poruka. Odlazne poruke procesiraju se u datoteci `handleMsgOut.js` (`chat-at-fesb\client\app\redux\middleware\serverHandlers`); vidjeti komentare u datoteci.
 

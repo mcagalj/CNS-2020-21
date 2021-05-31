@@ -1,0 +1,107 @@
+@import '~app/scss/main.scss';
+
+$font-size: 1.125rem !default;
+
+.MsgBoard {
+    display: flex;
+    flex-direction: column;
+    flex: 1 auto;
+}
+
+.MsgBoard__msg-box, 
+.MsgBoard__input-box,
+.MsgBoard__input {
+    @include Global__input;
+}
+
+.MsgBoard__msg-box {
+    overflow-y: auto;        
+    height: 450px;
+    text-align: left;
+    flex: 1 auto;
+}
+
+.MsgBoard__input-box {
+    margin: 0.2em 0 0 0;
+    display: flex;
+    padding: 0;
+}
+
+.MsgBoard__input {
+    border: none;
+    flex: 1 auto;
+}
+
+.MsgBoard__button {
+    @include Global__button;
+    width: 200px;
+}
+
+
+.MsgBoard__msg-container--in,
+.MsgBoard__msg-container--out {
+    display: flex; 
+}
+
+.MsgBoard__msg-container--out {
+    justify-content: flex-end;        
+}
+
+//----------------------
+// Msg cloud
+//----------------------
+$msgCloud--in-bg: darken(#fff, 2.5%);
+$msgCloud--out-bg: lighten(orange, 40%);
+$msgCloud--radius: 10px;
+
+.MsgBoard__msg-cloud--in,
+.MsgBoard__msg-cloud--out {
+    display: flex;
+    flex-direction: column;     
+    position: relative;
+    padding: 10px 15px;
+    margin: 15px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: $msgCloud--radius;
+    border-bottom-right-radius: $msgCloud--radius;
+    font-size: $font-size;
+    text-align: left;
+    line-height: 1.25;
+    word-break: break-all; 
+}
+
+.MsgBoard__msg-cloud--in {
+    background: $msgCloud--in-bg;
+    border: 1px solid darken($msgCloud--in-bg, 10%);
+    border-top-right-radius: $msgCloud--radius;
+}
+
+.MsgBoard__msg-cloud--out {
+    color: darken($msgCloud--in-bg, 75%);
+    background: $msgCloud--out-bg;
+    border: 1px solid darken($msgCloud--out-bg, 10%);
+    border-top-left-radius: $msgCloud--radius;
+}
+
+.MsgBoard__msg-sender--in,
+.MsgBoard__msg-sender--out {
+    font-size: 0.75*$font-size;
+    font-weight: 600;
+ }
+
+.MsgBoard__msg-sender--in {
+    color: complement(orange);
+}
+
+.MsgBoard__msg-sender--out {
+    color: orange;
+}
+
+.MsgBoard__msg-content {
+    padding: 0.5em 0;
+ }
+
+.MsgBoard__msg-time {
+    align-self: flex-end;
+    font-size: 0.6*$font-size;
+}

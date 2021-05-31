@@ -1,0 +1,18 @@
+{
+    "Server": {
+        "host": "0.0.0.0",
+        "port": 6968,
+        "banner": "Welcome to Chat@FESB!"
+    },
+
+    "Constants": {
+        "MsgType": {
+            "INIT": 0,
+            "CLIENT_JOINED": 1,
+            "CLIENT_LEFT": 2,
+            "UNICAST": 3,
+            "BROADCAST": 4,
+            "KEY_AGREEMENT": 5	
+        }
+    }
+}
