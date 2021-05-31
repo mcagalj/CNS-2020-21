@@ -14,7 +14,7 @@ U repozitoriju ćemo objavljivati upute, dijelove koda, konfiguracijske skripte,
 - [Lab 4 - CBC encryption mode and predictable initialization vector (IV)](/instructions/lab-4.md)
 - [Lab 5 - CTR encryption mode and repeated counters](/instructions/lab-5.md)
 - [Lab 6 - Asymmetric crypto: RSA signatures and DH key exchange](/instructions/lab-6.md)
-- Lab 7 - Securing end-2-end communication
+- [Lab 7 - Securing end-2-end communication](/instructions/lab-7.md)
 - Lab 8 - Public key certificates and TLS protocol
 - Lab 9 - SSH protocol and secure tunneling
 
