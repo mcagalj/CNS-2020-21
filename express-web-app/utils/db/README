@@ -1,0 +1,27 @@
+//----------------------------------------- 
+// Some useful MongoDB commands. Please
+// note that some of the shown commands
+// can be run only from the mongo shell (>).
+//
+// https://docs.mongodb.com/manual/reference/command/
+//-----------------------------------------
+
+> help
+
+> show dbs
+> use <db_name>
+> show collections
+> show users
+
+> db.help()
+
+> db.<collection_name>.find()
+> db.<collection_name>.find().pretty()
+> db.<collection_name>.find().limit(2)
+> db.<collection_name>.findOne()
+> db.<collection_name>.count()
+
+> db.<collection_name>.drop()
+
+> use <db_name>
+> db.dropDatabase()

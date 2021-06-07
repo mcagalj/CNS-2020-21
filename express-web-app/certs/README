@@ -1,0 +1,8 @@
+// TLS related logs
+debug("CERT socket.authorized: %s", req.socket.authorized);
+debug("CERT socket.authorizationError: %s", JSON.stringify(req.socket.authorizationError));
+debug("CERT socket.getCipher(): %s", JSON.stringify(req.socket.getCipher()));
+debug("CERT socket.getPeerCertificate():", req.socket.getPeerCertificate(false));
+
+// OpenSSL Certificate Authority (or how to create own CA using OpenSSL)
+https://jamielinux.com/docs/openssl-certificate-authority/introduction.html

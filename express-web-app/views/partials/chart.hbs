@@ -1,0 +1,24 @@
+{{#if visitor}}
+<header class="w3-container w3-light-grey">
+	<h3>Chart board</h3>        
+</header>	
+<div class="flot-box w3-padding-large">
+	<div id="flot">
+		<div id="flotSpinner" class="spinner-container">
+			<div class="spinner"></div>
+		</div>
+	</div>
+	{{#if member}}
+	<div class="w3-row">
+		<div class="w3-third w3-right">
+			<input class="w3-input w3-border w3-section" type="number" name="inputTemp" placeholder="Temperature (e.g., 25)">
+			<input class="w3-input w3-border" type="number" name="inputHum" placeholder="Humidity (e.g., 45)">		
+			<button class="w3-button w3-block w3-section w3-blue" name="add">Add new</button>
+			{{#if admin}}
+			<button class="w3-button w3-block w3-section w3-red" name="reset">Reset</button>	
+			{{/if}} <!-- End admin -->										
+		</div>
+	{{/if}} <!-- End member -->					
+	</div>			
+</div>
+{{/if}}<!-- End visitor -->
