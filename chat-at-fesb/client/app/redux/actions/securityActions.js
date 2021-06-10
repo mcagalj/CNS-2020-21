@@ -1,5 +1,7 @@
 import { KEY_GENERATE, KEY_GENERATED, KEY_DELETE } from "./actionTypes.js";
 
+import CryptoProvider from "../../services/security/CryptoProvider";
+
 export const generateKey = (payload) => (dispatch) => {
   dispatch({
     type: KEY_GENERATE,
@@ -12,17 +14,24 @@ export const generateKey = (payload) => (dispatch) => {
   // key based on password.
   // Your task is to replace this part with a true
   // "slow" hash function. See instructions below.
-  setTimeout(
-    () =>
+  CryptoProvider.generateKey("PBKDF2", {
+    secret: payload.secret,
+    salt: payload.id,
+    size: 64,
+  })
+    .then((key) =>
       dispatch({
         type: KEY_GENERATED,
-        payload: {
-          id: payload.id,
-          key: payload.secret,
-        },
-      }),
-    1000
-  );
+        payload: { id: payload.id, key },
+      })
+    )
+    .catch((error) =>
+      dispatch({
+        type: KEY_GENERATE,
+        payload: { id: payload.id, error },
+        error: true,
+      })
+    );
 
   //===================================================
   // Replace the above with a true slow hash function
